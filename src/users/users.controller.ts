@@ -1,4 +1,21 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Permissions } from 'src/auth/auth.decorator';
+import { PermissionsGuard } from 'src/auth/auth.guards';
+
 
 @Controller('users')
-export class UsersController {}
+@UseGuards(PermissionsGuard)
+export class UsersController {
+  @Get()
+  @Permissions('users.read')
+
+  findAll() {
+    return 'List of users';
+  }
+
+  @Post()
+  @Permissions('users.create')
+  create() {
+    return 'User created';
+  }
+}
